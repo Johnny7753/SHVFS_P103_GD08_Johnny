@@ -2,8 +2,12 @@
 
 public class IngredientDestoryComponent : InteractableComponentBase
 {
-    public override void Interact()
+    public GameObject Player;
+    public override void Interact(Transform HandPosition, bool IsOnHand)
     {
-        Debug.Log("Destory the food!");
+        if (IsOnHand == true)
+        {
+            Destroy(Player.GetComponentInChildren<FoodComponent>().gameObject);
+        }
     }
 }

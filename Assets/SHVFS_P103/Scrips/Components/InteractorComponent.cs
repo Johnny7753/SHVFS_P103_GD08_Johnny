@@ -11,6 +11,11 @@ public class InteractorComponent : MonoBehaviour
     [SerializeField]
     private float playerHeight;
     private PlayerActions playerActions;
+    public bool IsOnHand = false;
+    /*public bool IsOnDesk = false;
+    public bool IsOnHand = false;*/
+    [SerializeField]
+    public Transform HandPosition;
     private float interactDistance => interactMultiplier * Time.deltaTime;
     private void Awake()
     {
@@ -20,6 +25,7 @@ public class InteractorComponent : MonoBehaviour
 
     private void Update()
     {
+        
         if (playerActions.PlayerInput.InteractPrimary.WasPressedThisFrame())
         {
             TryInteract();
@@ -32,13 +38,18 @@ public class InteractorComponent : MonoBehaviour
 
         if (hits.Length < 1) return;
 
-            foreach (var hit in hits)
+        foreach (var hit in hits)
+        {
+            var interactable = hit.transform.GetComponent<InteractableComponentBase>();
+
+            if (interactable == null) return;
+
+            if (GetComponentInChildren<FoodComponent>() != null)
             {
-                var interactable = hit.transform.GetComponent<InteractableComponentBase>();
-
-                if (interactable == null) return;
-
-                interactable.Interact();
+                IsOnHand = true;
             }
+            else IsOnHand = false;
+            interactable.Interact(HandPosition,IsOnHand);
+        }
     }
 }

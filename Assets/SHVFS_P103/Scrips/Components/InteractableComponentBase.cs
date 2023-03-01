@@ -4,8 +4,5 @@ using UnityEngine;
 
 public abstract class InteractableComponentBase : MonoBehaviour
 {
-    public virtual void Interact()
-    {
-
-    }
+    public abstract void Interact(Transform HandPosition,bool IsOnHand);
 }
