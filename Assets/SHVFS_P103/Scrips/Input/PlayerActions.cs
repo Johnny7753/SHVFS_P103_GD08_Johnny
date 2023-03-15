@@ -44,6 +44,15 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InteractSecondary"",
+                    ""type"": ""Button"",
+                    ""id"": ""651f6580-d72b-4855-b642-6d81b1ecd3ca"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                     ""action"": ""InteractPrimary"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb099412-ca52-4906-94fd-01176652f776"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""New control scheme"",
+                    ""action"": ""InteractSecondary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -128,6 +148,7 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
         m_PlayerInput = asset.FindActionMap("PlayerInput", throwIfNotFound: true);
         m_PlayerInput_Movement = m_PlayerInput.FindAction("Movement", throwIfNotFound: true);
         m_PlayerInput_InteractPrimary = m_PlayerInput.FindAction("InteractPrimary", throwIfNotFound: true);
+        m_PlayerInput_InteractSecondary = m_PlayerInput.FindAction("InteractSecondary", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -189,12 +210,14 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     private IPlayerInputActions m_PlayerInputActionsCallbackInterface;
     private readonly InputAction m_PlayerInput_Movement;
     private readonly InputAction m_PlayerInput_InteractPrimary;
+    private readonly InputAction m_PlayerInput_InteractSecondary;
     public struct PlayerInputActions
     {
         private @PlayerActions m_Wrapper;
         public PlayerInputActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_PlayerInput_Movement;
         public InputAction @InteractPrimary => m_Wrapper.m_PlayerInput_InteractPrimary;
+        public InputAction @InteractSecondary => m_Wrapper.m_PlayerInput_InteractSecondary;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -210,6 +233,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @InteractPrimary.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnInteractPrimary;
                 @InteractPrimary.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnInteractPrimary;
                 @InteractPrimary.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnInteractPrimary;
+                @InteractSecondary.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnInteractSecondary;
+                @InteractSecondary.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnInteractSecondary;
+                @InteractSecondary.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnInteractSecondary;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -220,6 +246,9 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
                 @InteractPrimary.started += instance.OnInteractPrimary;
                 @InteractPrimary.performed += instance.OnInteractPrimary;
                 @InteractPrimary.canceled += instance.OnInteractPrimary;
+                @InteractSecondary.started += instance.OnInteractSecondary;
+                @InteractSecondary.performed += instance.OnInteractSecondary;
+                @InteractSecondary.canceled += instance.OnInteractSecondary;
             }
         }
     }
@@ -237,5 +266,6 @@ public partial class @PlayerActions : IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnInteractPrimary(InputAction.CallbackContext context);
+        void OnInteractSecondary(InputAction.CallbackContext context);
     }
 }
